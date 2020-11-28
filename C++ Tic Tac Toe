@@ -1,0 +1,98 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std; 
+int  computersMove  (string gamestate);
+int  determineWinner(string gamestate);
+void displayGame    (string gamestate);
+
+int main(){
+    srand(time(NULL));                   
+    string gamestate = "         "; 
+    int userSquare;
+    int computerSquare;
+    displayGame(gamestate);
+
+    do {
+        cout << "Where would you like to place an X?" << endl;
+        cin >> userSquare;
+        gamestate.at(userSquare - 1) = 'x';
+          if (determineWinner(gamestate) == 0) {
+            computerSquare = computersMove (gamestate);
+            gamestate.at(computerSquare) = 'o';
+          }
+        displayGame(gamestate);
+    } while (determineWinner(gamestate) == 0); 
+    return 0;
+}
+
+void displayGame(string g) {
+    cout << g.at(0) << "|" << g.at(1) << "|" << g.at(2) << endl;
+    cout << "-|-|-" << endl;    
+    cout << g.at(3) << "|" << g.at(4) << "|" << g.at(5) << endl;    
+    cout << "-|-|-" << endl;    
+    cout << g.at(6) << "|" << g.at(7) << "|" << g.at(8) << endl;    
+    cout << endl;
+}
+
+int computersMove (string g) {    
+  int randomNumber;
+  if (g.find(' ') == string::npos) {
+    cout << "Invalid State.  The computer has no open square." << endl;
+    return (0);
+  }
+  while (true) {
+    randomNumber = (rand() % 9);
+    if (g.at(randomNumber) == ' ') {
+      return (randomNumber);
+    }
+  }
+    return (0); // should not get here
+}
+int determineWinner(string g) {
+  if ((g.at(0) == 'o' && g.at(1) == 'o' && g.at(2) == 'o')
+                              ||    
+  (g.at(3) == 'o' && g.at(4) == 'o' && g.at(5) == 'o')
+              ||    
+  (g.at(6) == 'o' && g.at(7) == 'o' && g.at(8) == 'o')
+              ||    
+  (g.at(0) == 'o' && g.at(3) == 'o' && g.at(6) == 'o')
+              ||    
+  (g.at(1) == 'o' && g.at(4) == 'o' && g.at(7) == 'o')
+              ||    
+  (g.at(2) == 'o' && g.at(5) == 'o' && g.at(8) == 'o')
+              ||    
+  (g.at(0) == 'o' && g.at(4) == 'o' && g.at(8) == 'o')
+              ||    
+  (g.at(2) == 'o' && g.at(4) == 'o' && g.at(6) == 'o')) {
+  
+  cout << "The computer won!" << endl;
+  return(2);
+  }
+  if ((g.at(0) == 'x' && g.at(1) == 'x' && g.at(2) == 'x')
+                              ||    
+  (g.at(3) == 'x' && g.at(4) == 'x' && g.at(5) == 'x')
+              ||    
+  (g.at(6) == 'x' && g.at(7) == 'x' && g.at(8) == 'x')
+              ||    
+  (g.at(0) == 'x' && g.at(3) == 'x' && g.at(6) == 'x')
+              ||    
+  (g.at(1) == 'x' && g.at(4) == 'x' && g.at(7) == 'x')
+              ||    
+  (g.at(2) == 'x' && g.at(5) == 'x' && g.at(8) == 'x')
+              ||    
+  (g.at(0) == 'x' && g.at(4) == 'x' && g.at(8) == 'x')
+              ||    
+  (g.at(2) == 'x' && g.at(4) == 'x' && g.at(6) == 'x')) {
+
+    cout << "You won!" << endl;        
+    return(1);
+  }
+
+  if (g.find(' ') != string::npos)
+  return (0);
+
+  cout << "It's a tie!" << endl;    
+  return (-1);
+}
